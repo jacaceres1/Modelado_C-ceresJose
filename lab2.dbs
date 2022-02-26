@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="Sqlite" id="Project-15b" database="Sqlite" >
+	<schema name="Default" >
+		<table name="dim_Time" spec="" >
+			<column name="TimeId" type="integer" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTOINCREMENT]]></identity>
+			</column>
+			<column name="fecha" type="date" jt="91" mandatory="y" />
+			<column name="año" type="integer" jt="4" mandatory="y" />
+			<column name="mes" type="integer" jt="4" mandatory="y" />
+			<column name="dia" type="integer" jt="4" mandatory="y" />
+			<column name="nombre_dia" type="varchar" length="50" jt="12" mandatory="y" />
+			<column name="dia_semana" type="integer" jt="4" mandatory="y" />
+			<column name="semana" type="integer" jt="4" mandatory="y" />
+			<column name="trimestre" type="integer" jt="4" mandatory="y" />
+			<index name="pk_dim_Time" unique="PRIMARY_KEY" >
+				<column name="TimeId" />
+			</index>
+		</table>
+		<table name="dim_artists" spec="" >
+			<column name="ArtistId" type="integer" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTOINCREMENT]]></identity>
+			</column>
+			<column name="ArtistName" type="varchar" jt="12" mandatory="y" />
+			<index name="pk_dim_artists" unique="PRIMARY_KEY" >
+				<column name="ArtistId" />
+			</index>
+		</table>
+		<table name="dim_customers" spec="" >
+			<column name="CustomerId" type="integer" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTOINCREMENT]]></identity>
+			</column>
+			<column name="FirstName" type="varchar" length="40" jt="12" mandatory="y" />
+			<column name="LastName" type="varchar" length="20" jt="12" mandatory="y" />
+			<column name="Company" type="varchar" length="80" jt="12" mandatory="y" />
+			<column name="Address" type="varchar" length="70" jt="12" mandatory="y" />
+			<column name="City" type="varchar" length="40" jt="12" mandatory="y" />
+			<column name="State" type="varchar" length="40" jt="12" mandatory="y" />
+			<column name="Country" type="varchar" length="40" jt="12" mandatory="y" />
+			<column name="PostalCode" type="varchar" length="10" jt="12" mandatory="y" />
+			<column name="Phone" type="varchar" length="24" jt="12" mandatory="y" />
+			<column name="Fax" type="varchar" length="24" jt="12" mandatory="y" />
+			<column name="Email" type="varchar" length="60" jt="12" mandatory="y" />
+			<index name="pk_dim_customers" unique="PRIMARY_KEY" >
+				<column name="CustomerId" />
+			</index>
+		</table>
+		<table name="dim_employees" spec="" >
+			<column name="EmployeeId" type="integer" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTOINCREMENT]]></identity>
+			</column>
+			<column name="LastName" type="varchar" jt="12" mandatory="y" />
+			<column name="FirstName" type="varchar" jt="12" mandatory="y" />
+			<column name="Title" type="varchar" jt="12" mandatory="y" />
+			<column name="BirthDate" type="varchar" jt="12" mandatory="y" />
+			<column name="HireDate" type="varchar" jt="12" mandatory="y" />
+			<column name="Address" type="varchar" jt="12" mandatory="y" />
+			<column name="City" type="varchar" jt="12" mandatory="y" />
+			<column name="State" type="varchar" jt="12" mandatory="y" />
+			<column name="Country" type="varchar" jt="12" mandatory="y" />
+			<column name="PostalCode" type="varchar" jt="12" mandatory="y" />
+			<column name="Phone" type="varchar" jt="12" mandatory="y" />
+			<column name="Fax" type="varchar" jt="12" mandatory="y" />
+			<column name="Email" type="varchar" jt="12" mandatory="y" />
+			<index name="pk_dim_employees" unique="PRIMARY_KEY" >
+				<column name="EmployeeId" />
+			</index>
+		</table>
+		<table name="dim_location" spec="" >
+			<column name="LocationId" type="integer" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTOINCREMENT]]></identity>
+			</column>
+			<column name="Address" type="varchar" jt="12" mandatory="y" />
+			<column name="City" type="varchar" jt="12" mandatory="y" />
+			<column name="State" type="varchar" jt="12" mandatory="y" />
+			<column name="Country" type="varchar" jt="12" mandatory="y" />
+			<column name="PostalCode" type="varchar" jt="12" mandatory="y" />
+			<index name="pk_dim_location" unique="PRIMARY_KEY" >
+				<column name="LocationId" />
+			</index>
+		</table>
+		<table name="dim_tracks" spec="" >
+			<column name="TrackId" type="integer" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTOINCREMENT]]></identity>
+			</column>
+			<column name="TrackName" type="varchar" jt="12" mandatory="y" />
+			<column name="Album" type="varchar" jt="12" mandatory="y" />
+			<column name="Genre" type="varchar" jt="12" mandatory="y" />
+			<column name="MediaType" type="varchar" jt="12" mandatory="y" />
+			<column name="Composer" type="varchar" jt="12" mandatory="y" />
+			<column name="Milliseconds" type="bigint" jt="-5" mandatory="y" />
+			<column name="Bytes" type="bigint" jt="-5" mandatory="y" />
+			<column name="Price" type="numeric" length="5" decimal="2" jt="2" mandatory="y" />
+			<index name="pk_dim_tracks" unique="PRIMARY_KEY" >
+				<column name="TrackId" />
+			</index>
+		</table>
+		<table name="fact_Sales" spec="" >
+			<column name="id_Fact" type="integer" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTOINCREMENT]]></identity>
+			</column>
+			<column name="CustomerId" type="integer" jt="4" mandatory="y" />
+			<column name="EmployeeId" type="integer" jt="4" mandatory="y" />
+			<column name="TrackId" type="integer" jt="4" mandatory="y" />
+			<column name="ArtistId" type="integer" jt="4" mandatory="y" />
+			<column name="LocationId" type="integer" jt="4" mandatory="y" />
+			<column name="TimeId" type="integer" jt="4" mandatory="y" />
+			<column name="Price" type="numeric" length="10" decimal="2" jt="2" mandatory="y" />
+			<index name="pk_fact_Sales" unique="PRIMARY_KEY" >
+				<column name="id_Fact" />
+			</index>
+			<fk name="FK_fact_Sales dim_customers" to_schema="Default" to_table="dim_customers" options="ON DELETE NO ACTION ON UPDATE NO ACTION" >
+				<fk_column name="CustomerId" pk="CustomerId" />
+			</fk>
+			<fk name="FK_fact_Sales dim_employees" to_schema="Default" to_table="dim_employees" options="ON DELETE NO ACTION ON UPDATE NO ACTION" >
+				<fk_column name="EmployeeId" pk="EmployeeId" />
+			</fk>
+			<fk name="FK_fact_Sales dim_location" to_schema="Default" to_table="dim_location" options="ON DELETE NO ACTION ON UPDATE NO ACTION" >
+				<fk_column name="LocationId" pk="LocationId" />
+			</fk>
+			<fk name="FK_fact_Sales dim_Time" to_schema="Default" to_table="dim_Time" options="ON DELETE NO ACTION ON UPDATE NO ACTION" >
+				<fk_column name="TimeId" pk="TimeId" />
+			</fk>
+			<fk name="FK_fact_Sales dim_artists" to_schema="Default" to_table="dim_artists" options="ON DELETE NO ACTION ON UPDATE NO ACTION" >
+				<fk_column name="ArtistId" pk="ArtistId" />
+			</fk>
+			<fk name="FK_fact_Sales dim_tracks" to_schema="Default" to_table="dim_tracks" options="ON DELETE NO ACTION ON UPDATE NO ACTION" >
+				<fk_column name="TrackId" pk="TrackId" />
+			</fk>
+		</table>
+	</schema>
+	<connector name="Sqlite" database="Sqlite" driver_class="org.sqlite.JDBC" driver_jar="sqlite-jdbc-3.36.0.3.jar" driver_desc="Standard" host="localhost" port="7210" instance="C:/sqlite3/db/lab2_data.db" />
+	<layout name="Main Layout" id="Layout-143f" show_relation="columns" >
+		<entity schema="Default" name="dim_Time" color="BED3F4" x="464" y="720" />
+		<entity schema="Default" name="dim_artists" color="BED3F4" x="464" y="448" />
+		<entity schema="Default" name="dim_customers" color="BED3F4" x="48" y="384" />
+		<entity schema="Default" name="dim_employees" color="BED3F4" x="256" y="80" />
+		<entity schema="Default" name="dim_location" color="BED3F4" x="48" y="720" />
+		<entity schema="Default" name="dim_tracks" color="BED3F4" x="256" y="720" />
+		<entity schema="Default" name="fact_Sales" color="BED3F4" x="256" y="448" />
+		<group name="fact_Sales" color="ECF0F7" >
+			<entity schema="Default" name="fact_Sales" />
+			<entity schema="Default" name="dim_artists" />
+			<entity schema="Default" name="dim_Time" />
+			<entity schema="Default" name="dim_tracks" />
+			<entity schema="Default" name="dim_location" />
+			<entity schema="Default" name="dim_customers" />
+			<entity schema="Default" name="dim_employees" />
+		</group>
+	</layout>
+	<layout name="~Layout with Sample Tools" id="Layout-920" show_column_type="y" show_relation="columns" >
+		<entity schema="Default" name="dim_Time" color="BED3F4" x="576" y="688" />
+		<entity schema="Default" name="dim_artists" color="BED3F4" x="576" y="416" />
+		<entity schema="Default" name="dim_customers" color="BED3F4" x="48" y="352" />
+		<entity schema="Default" name="dim_employees" color="BED3F4" x="320" y="48" />
+		<entity schema="Default" name="dim_location" color="BED3F4" x="80" y="688" />
+		<entity schema="Default" name="dim_tracks" color="BED3F4" x="320" y="688" />
+		<entity schema="Default" name="fact_Sales" color="BED3F4" x="320" y="416" />
+		<script name="SQL Editor" id="Editor-263d" language="SQL" >
+			<string><![CDATA[SELECT id_Fact, CustomerId, EmployeeId, TrackId, ArtistId, LocationId, TimeId, Price
+FROM
+	fact_Sales s;]]></string>
+		</script>
+		<browser id="Browse-750" name="Relational Data Explorer" confirm_updates="y" >
+			<browse_table schema="Default" entity="fact_Sales" x="20" y="20" width="400" height="300" >
+				<browse_table schema="Default" entity="dim_customers" fk="FK_fact_Sales dim_customers" x="440" y="20" width="500" height="350" record_view="y" />
+			</browse_table>
+		</browser>
+		<query id="Query-1be5" name="Query Builder" >
+			<query_table schema="Default" name="fact_Sales" alias="fs" x="48" y="48" >
+				<column name="id_Fact" />
+				<column name="CustomerId" />
+				<column name="EmployeeId" />
+				<column name="TrackId" />
+				<column name="ArtistId" />
+				<column name="LocationId" />
+				<column name="TimeId" />
+				<column name="Price" />
+				<query_table schema="Default" name="dim_customers" alias="dc" x="224" y="48" fk="FK_fact_Sales dim_customers" type="Inner Join" >
+					<column name="CustomerId" />
+					<column name="FirstName" />
+					<column name="LastName" />
+					<column name="Company" />
+					<column name="Address" />
+					<column name="City" />
+					<column name="State" />
+					<column name="Country" />
+					<column name="PostalCode" />
+					<column name="Phone" />
+					<column name="Fax" />
+					<column name="Email" />
+				</query_table>
+			</query_table>
+		</query>
+		<form name="Analytic Application" id="Report-2327" template="Page" css="container-fluid" view="frame" >
+			<var name="samplePageNumber" type="4" value="0" mandatory="n" />
+			<var name="sampleRecordsPerPage" type="4" value="100" mandatory="n" />
+			<body name="Body" template="Grid" pos="0,0,0,0,f,f" layout="{{-2,-2,-2,-2,-1},{-2,-2,-2,-2,-2}}" scroll="n" html="n" >
+				<cell type="label" name="Fact_sales Data" template="H3" pos="0,0,1,0,l,c" />
+				<cell type="label" name="Each cell may contain a component: label, chart, button, tableview. &#10;&lt;br&gt;Double-click cells to edit. Insert rows, columns or merge cells from the context menu." pos="0,1,3,1,l,c" />
+				<cell type="chart" name="Pie" template="Pie" pos="0,2,4,2,l,c" max_records="20" >
+					<form_script type="DataSource" language="SQL" >
+						<var name="id_Fact" type="4" />
+						<var name="CustomerId" type="4" />
+						<var name="EmployeeId" type="4" />
+						<var name="TrackId" type="4" />
+						<var name="ArtistId" type="4" />
+						<var name="LocationId" type="4" />
+						<var name="TimeId" type="4" />
+						<var name="Price" type="2" />
+						<script ><![CDATA[SELECT * FROM fact_Sales]]></script>
+					</form_script>
+					<param name="width" value="100%" />
+					<param name="v0" value="Price" />
+					<param name="title" value="Sample Chart" />
+					<param name="height" value="400px" />
+				</cell>
+				<tableview name="sample" template="Table" css="table table-striped table-sm table-hover" pos="0,3,4,3,f,f" layout="{{-2,-2,-2,-2,-2,-2,-2},{-2,-2}}" scroll="n" html="n" header_rows="1" >
+					<form_script type="DataSource" language="SQL" >
+						<var name="id_Fact" type="4" />
+						<var name="CustomerId" type="4" />
+						<var name="EmployeeId" type="4" />
+						<var name="TrackId" type="4" />
+						<var name="ArtistId" type="4" />
+						<var name="LocationId" type="4" />
+						<var name="TimeId" type="4" />
+						<var name="Price" type="2" />
+						<script ><![CDATA[SELECT * FROM fact_Sales]]></script>
+					</form_script>
+					<cell type="label" name="id_Fact" pos="0,0,0,0,c,c" />
+					<cell type="label" name="CustomerId" pos="1,0,1,0,c,c" />
+					<cell type="label" name="EmployeeId" pos="2,0,2,0,c,c" />
+					<cell type="label" name="TrackId" pos="3,0,3,0,c,c" />
+					<cell type="label" name="ArtistId" pos="4,0,4,0,c,c" />
+					<cell type="label" name="LocationId" pos="5,0,5,0,c,c" />
+					<cell type="label" name="Button can open other pages." pos="6,0,6,0,c,c" />
+					<cell type="label" name="${id_Fact}" template="Plain" pos="0,1,0,1,l,c" />
+					<cell type="label" name="${CustomerId}" template="Plain" pos="1,1,1,1,l,c" />
+					<cell type="label" name="${EmployeeId}" template="Plain" pos="2,1,2,1,l,c" />
+					<cell type="label" name="${TrackId}" template="Plain" pos="3,1,3,1,l,c" />
+					<cell type="label" name="${ArtistId}" template="Plain" pos="4,1,4,1,l,c" />
+					<cell type="label" name="${LocationId}" template="Plain" pos="5,1,5,1,l,c" />
+					<cell type="button" name="More" template="Plain" css="btn btn-default btn-success" pos="6,1,6,1,c,c" ref_id="Report-2327" />
+				</tableview>
+				<cell type="href" name="" disabled="${samplePageNumber&lt;1}" pos="0,4,0,4,l,c" glyph="FA-ANGLE_DOUBLE_LEFT" ref_id="Report-2327" >
+					<var name="samplePageNumber" value="0" />
+				</cell>
+				<cell type="href" name="" disabled="${samplePageNumber&lt;1}" pos="1,4,1,4,l,c" glyph="FA-ANGLE_LEFT" ref_id="Report-2327" >
+					<var name="samplePageNumber" value="${Math.max(0,samplePageNumber-1)}" />
+				</cell>
+				<cell type="label" name="Page ${samplePageNumber+1}" pos="2,4,2,4,l,c" />
+				<cell type="href" name="" disabled="${!sampleHasNextPage}" pos="3,4,3,4,l,c" glyph="FA-ANGLE_RIGHT" ref_id="Report-2327" >
+					<var name="samplePageNumber" value="${( samplePageNumber+1 )}" />
+				</cell>
+			</body>
+		</form>
+	</layout>
+</project>
