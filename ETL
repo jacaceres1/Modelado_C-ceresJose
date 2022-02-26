@@ -1,0 +1,166 @@
+import pandas as pd
+import numpy as np 
+from sqlalchemy import create_engine
+from sqlalchemy import Table, Column, Integer, String, MetaData, ForeignKey
+from sqlalchemy import inspect
+from sqlalchemy import MetaData
+import sqlite3
+import datetime
+import pyodbc
+
+engine = create_engine('sqlite:///chinook.db')
+engine
+
+metadata = MetaData()
+metadata.create_all(engine)
+inspector = inspect(engine)
+inspector.get_columns('artists')
+
+df_artists = pd.read_sql_query(
+    """
+    select ArtistId, Name as ArtistName from artists
+    """
+    ,con = engine.connect())
+df_artists.head(5)
+
+df_customer = pd.read_sql_query(
+"""
+select
+    CustomerId,
+    FirstName,
+    LastName,
+    ifnull(Company,'N.A') as Company,
+    Address,
+    City,
+    ifnull(State,'No Asignado') as State,
+    Country,
+    ifnull( PostalCode,'N.A') as PostalCode,
+    ifnull(Phone,'N.A') Phone,
+    ifnull(Fax,'N.A') Fax,
+    Email
+from customers
+"""
+,con=engine.connect())
+df_customer.head(5)
+
+df_employees = pd.read_sql_query(
+"""
+SELECT EmployeeId,
+       LastName,
+       FirstName,
+       Title,
+       BirthDate,
+       HireDate,
+       Address,
+       City,
+       State,
+       Country,
+       PostalCode,
+       Phone,
+       Fax,
+       Email
+  FROM employees;
+"""
+,con= engine.connect())
+df_employees.head(5)
+
+df_location = pd.read_sql_query(
+"""
+SELECT CustomerId AS LocationId,
+       Address,
+       City,
+       COALESCE(State, 'N/A') AS State,
+       Country,
+       COALESCE(PostalCode, 'N/A') AS PostalCode
+FROM customers;
+"""    
+,con=engine.connect())
+df_location.head(5)
+
+df_track = pd.read_sql_query(
+"""
+SELECT t.TrackId,
+       t.Name AS TrackName,
+       al.Title AS Album,
+       g.Name AS Genre,
+       mt.Name AS MediaType,
+       ifnull(t.Composer, 'N.A') AS Composer,
+       t.Milliseconds,
+       t.Bytes,
+       t.UnitPrice AS Price
+  FROM tracks t
+       JOIN
+       albums al ON t.AlbumId = al.AlbumId
+       JOIN
+       genres g ON t.GenreId = g.GenreId
+       JOIN
+       media_types mt ON mt.MediaTypeId = t.MediaTypeId
+ ORDER BY 1;
+""",con=engine.connect())
+df_track.head(5)
+
+df_Sales = pd.read_sql_query(
+"""
+SELECT it.InvoiceLineId AS id_Fact,
+       c.CustomerId,
+       c.SupportRepId AS EmployeeId,
+       it.TrackId,
+       ar.ArtistId,
+       c.CustomerId AS LocationId,
+       strftime('%Y%m%d', datetime(i.InvoiceDate) ) AS TimeId,
+       it.UnitPrice * it.Quantity AS Price
+  FROM invoice_items it
+       JOIN
+       invoices i ON i.InvoiceId = it.InvoiceId
+       JOIN
+       customers c ON c.CustomerId = i.CustomerId
+       JOIN
+       tracks t ON t.TrackId = it.TrackId
+       JOIN
+       albums al ON al.AlbumId = t.AlbumId
+       JOIN
+       artists ar ON ar.ArtistId = al.ArtistId
+ ORDER BY 1;
+"""
+,con =engine.connect())
+df_Sales.head(5)
+
+df_time = pd.read_sql_query(
+    """
+    SELECT 
+    strftime('%Y%m%d', datetime(InvoiceDate) ) AS TimeId,
+    InvoiceDate as fecha,
+        strftime('%Y', InvoiceDate) AS año,
+       strftime('%m', InvoiceDate) AS mes,
+       strftime('%d', InvoiceDate) AS dia,
+       case strftime('%w',InvoiceDate)
+         when '0' then 'Domingo'
+         when '1' then 'Lunes'
+         when '2' then 'Martes'
+         when '3' then 'Miercoles'
+         when '4' then 'Jueves'
+         when '5' then 'Viernes'
+         when '6' then 'Sabado'
+       end as nombre_dia,
+       strftime('%w', InvoiceDate) as dia_semana,
+       strftime('%W', InvoiceDate) AS semana,
+       case 
+        when 0 + strftime('%m', InvoiceDate) between  1 and  4 then 'Primer Trimestre'
+        when 0 + strftime('%m', InvoiceDate) between  5 and  8 then 'Segundo Trimestre'
+        when 0 + strftime('%m', InvoiceDate) between  9 and  12 then 'Tercer Trimestre'
+    end as trimestre     
+FROM invoices;
+    """, con = engine.connect())
+df_time.head(5)
+
+engine2 = create_engine('sqlite:///lab2_data.db')
+engine2
+conex = engine2.connect()
+
+df_artists.to_sql('dim_artists',conex,if_exists='append', index=False)
+df_customer.to_sql('dim_customers',conex,if_exists='append', index=False)
+df_employees.to_sql('dim_employees',conex,if_exists='append', index=False)
+df_location.to_sql('dim_location',conex,if_exists='append', index=False)
+df_time.to_sql('dim_Time',conex,if_exists='append', index=False)
+df_track.to_sql('dim_tracks',conex,if_exists='append', index=False)
+df_Sales.to_sql('fact_Sales',conex,if_exists='append', index=False)
